@@ -4,7 +4,8 @@ const express = require('express');
 const app = express(); 
 const port = process.env.PORT || 3000;
 
-const { getRates } = require('./lib/fixer-service');
+const { getRates, getSymbols, } = require('./lib/fixer-service');
+const { convertCurrency } = require('./lib/free-currency-service');
 
 // Set public folder as root
 app.use(express.static('public'));
@@ -47,6 +48,29 @@ app.get('/api/rates', async (req, res) => {
     } 
 });
 
+// Fecth symbols
+app.get('/api/symbols', async (req, res) => {
+    try { 
+        const data = await getSymbols();
+        res.type('json');
+        res.send(data);
+    } catch (error) {
+        errorHandler(error,req, res);
+    }
+});
+
+// Convert Currency 
+app.post('/api/convert', async (req, res) => { 
+    try { 
+        const { from, to } = req.body; 
+        const data = await convertCurrency(from, to); 
+        res.typer('json'); 
+        res.send(data); 
+    } 
+    catch (error) { 
+        errorHandler(error, req, res); 
+    } 
+});
 
 // Redirect all traffic to index.html 
 app.use((req, res) => res.sendFile(`${__dirname}/public/index.html`));
@@ -54,9 +78,9 @@ app.use((req, res) => res.sendFile(`${__dirname}/public/index.html`));
 // Listen for HTTP requests on port 3000 
 app.listen(port, () => { console.log('listening on %d', port); });
 
-// Place this block at the bottom 
-// const test = async() => { 
-//     const data = await getRates(); 
-//     console.log(data); 
-// } 
+// Test Symbols Endpoint 
+// const test = async() => {
+//     console.log('TEST')
+//     const data = await getSymbols(); 
+//     console.log(data); }
 // test();
