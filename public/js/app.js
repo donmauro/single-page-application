@@ -19,9 +19,11 @@ window.addEventListener('load', () => {
         }
     });
 
+    const baseURL = 'http://localhost:3000/api'
+    
     // Instantiate api handler 
     const api = axios.create({ 
-        baseURL: 'http://localhost:3000/api', 
+        baseURL: process.env.BASE_URL||baseURL, 
         timeout: 5000, 
     }); 
     
