@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 window.addEventListener('load', () => { 
     const el = $('#app'); 
     // Compile Handlebar Templates 
@@ -23,7 +25,7 @@ window.addEventListener('load', () => {
     
     // Instantiate api handler 
     const api = axios.create({ 
-        baseURL: process.env.BASE_URL||baseURL, 
+        baseURL: '/api', 
         timeout: 5000, 
     }); 
     
