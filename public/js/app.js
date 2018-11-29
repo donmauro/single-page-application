@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 window.addEventListener('load', () => { 
     const el = $('#app'); 
     // Compile Handlebar Templates 
